@@ -3,9 +3,7 @@
 #
 ---
 exports:
-    header-dirs: 
-    - lsp-framework
-    
+    header-dirs: [lsp-framework]
     modules:
         lsp: .
 

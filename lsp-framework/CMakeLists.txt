@@ -24,48 +24,51 @@ else()
 	endif()
 endif()
 
-add_executable(lspgen lspgen/lspgen.cpp lsp/json/json.cpp lsp/str.cpp)
-target_include_directories(lspgen PRIVATE .)
+fips_begin_app(lspgen cmdline)
+    fips_dir(lspgen)
+        fips_files(lspgen.cpp)
+    fips_dir(lsp/json)
+        fips_files(json.cpp)
+    fips_dir(lsp)
+        fips_files(str.cpp)
+    target_include_directories(lspgen PRIVATE .)
+fips_end_app()
 
-set(LSP_SRC_DIR lsp/)
-
-set(LSP_HEADERS
-	# lsp
-	connection.h
-	error.h
-	fileuri.h
-	messagebase.h
-	messagedispatcher.h
-	messagehandler.h
-	nullable.h
-	requesthandler.h
-	serialization.h
-	str.h
-	util.h
-	# io
-	io/standardio.h
-	# json
-	json/json.h
-	# jsonrpc
-	jsonrpc/jsonrpc.h
-)
-list(TRANSFORM LSP_HEADERS PREPEND ${LSP_SRC_DIR})
-
-set(LSP_SOURCES
-	# lsp
-	connection.cpp
-	messagedispatcher.cpp
-	requesthandler.cpp
-	str.cpp
-	fileuri.cpp
-	# io
-	io/standardio.cpp
-	# json
-	json/json.cpp
-	# jsonrpc
-	jsonrpc/jsonrpc.cpp
-)
-list(TRANSFORM LSP_SOURCES PREPEND ${LSP_SRC_DIR})
+fips_begin_lib(lsp)
+fips_dir(lsp)
+fips_files(
+        # lsp
+        connection.h
+        error.h
+        fileuri.h
+        messagebase.h
+        messagedispatcher.h
+        messagehandler.h
+        nullable.h
+        requesthandler.h
+        serialization.h
+        str.h
+        util.h
+        # io
+        io/standardio.h
+        # json
+        json/json.h
+        # jsonrpc
+        jsonrpc/jsonrpc.h
+        
+        # lsp
+        connection.cpp
+        messagedispatcher.cpp
+        requesthandler.cpp
+        str.cpp
+        fileuri.cpp
+        # io
+        io/standardio.cpp
+        # json
+        json/json.cpp
+        # jsonrpc
+        jsonrpc/jsonrpc.cpp
+    )
 
 set(LSP_GENERATED_FILES_DIR ${CMAKE_CURRENT_BINARY_DIR}/generated)
 file(MAKE_DIRECTORY ${LSP_GENERATED_FILES_DIR}/lsp)
@@ -89,7 +92,7 @@ add_custom_command(
 	DEPENDS lspgen ${LSP_METAMODEL_JSON}
 	COMMENT "Generating lsp types from meta model..."
 )
-
-add_library(lsp STATIC)
 target_include_directories(lsp PUBLIC . ${LSP_GENERATED_FILES_DIR})
-target_sources(lsp PRIVATE ${LSP_HEADERS} ${LSP_SOURCES} ${LSP_GENERATED_HEADERS} ${LSP_GENERATED_SOURCES})
+target_sources(lsp PRIVATE ${LSP_GENERATED_HEADERS} ${LSP_GENERATED_SOURCES})
+
+fips_end_lib()

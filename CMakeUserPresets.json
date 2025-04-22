@@ -9,7 +9,7 @@
     {
       "name": "default",
       "displayName": "win64-vstudio-debug",
-      "binaryDir": "H://fips-build/fips-lsp-framework/win64-vstudio-debug",
+      "binaryDir": "H:/nebula/fips-build/fips-lsp-framework/win64-vstudio-debug",
       "architecture": "x64",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
