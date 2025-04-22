@@ -1,0 +1,11 @@
+#
+# fips-lsp-framework
+#
+---
+exports:
+    header-dirs: 
+    - lsp-framework
+    
+    modules:
+        lsp: .
+
